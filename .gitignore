@@ -22,3 +22,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# BDD and test output
+test-results/
+.features-gen/

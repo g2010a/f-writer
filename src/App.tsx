@@ -1,49 +1,77 @@
 import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import { invoke } from "@tauri-apps/api/core";
+import { useTranslation } from "react-i18next";
 import "./App.css";
-
+import "./i18n";  // Import i18n configuration
 function App() {
-  const [greetMsg, setGreetMsg] = useState("");
-  const [name, setName] = useState("");
-
-  async function greet() {
-    // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
-    setGreetMsg(await invoke("greet", { name }));
-  }
-
+  const { t } = useTranslation();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [storyTitle, setStoryTitle] = useState("");
+  const [storyDescription, setStoryDescription] = useState("");
+  const handleCreateStory = (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log("Creating story:", storyTitle, storyDescription);
+    setIsModalOpen(false);
+    // TODO: Navigate to workspace
+  };
   return (
-    <main className="container">
-      <h1>Welcome to Tauri + React</h1>
-
-      <div className="row">
-        <a href="https://vite.dev" target="_blank">
-          <img src="/vite.svg" className="logo vite" alt="Vite logo" />
-        </a>
-        <a href="https://tauri.app" target="_blank">
-          <img src="/tauri.svg" className="logo tauri" alt="Tauri logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <p>Click on the Tauri, Vite, and React logos to learn more.</p>
-
-      <form
-        className="row"
-        onSubmit={(e) => {
-          e.preventDefault();
-          greet();
-        }}
+    <main className="container" data-testid="welcome-page">
+      <h1>{t('welcome.title')}</h1>
+      <p>{t('welcome.subtitle')}</p>
+      <button 
+        onClick={() => setIsModalOpen(true)}
+        data-testid="new-story-button"
       >
-        <input
-          id="greet-input"
-          onChange={(e) => setName(e.currentTarget.value)}
-          placeholder="Enter a name..."
-        />
-        <button type="submit">Greet</button>
-      </form>
-      <p>{greetMsg}</p>
+        {t('buttons.newStory')}
+      </button>
+      {isModalOpen && (
+        <div 
+          role="dialog" 
+          aria-modal="true"
+          data-testid="new-story-modal"
+          className="modal"
+        >
+          <h2>{t('welcome.title')}</h2>
+          
+          <form onSubmit={handleCreateStory}>
+            <label data-testid="story-title-label">
+              {t('forms.storyTitle')}
+              <input
+                type="text"
+                value={storyTitle}
+                onChange={(e) => setStoryTitle(e.target.value)}
+                placeholder={t('forms.storyTitlePlaceholder')}
+                aria-label={t('forms.storyTitle')}
+                data-testid="story-title-input"
+              />
+            </label>
+            <label data-testid="brief-description-label">
+              {t('forms.briefDescription')}
+              <textarea
+                value={storyDescription}
+                onChange={(e) => setStoryDescription(e.target.value)}
+                placeholder={t('forms.briefDescriptionPlaceholder')}
+                aria-label={t('forms.briefDescription')}
+                data-testid="brief-description-input"
+              />
+            </label>
+            <div className="modal-actions">
+              <button 
+                type="submit" 
+                data-testid="create-story-button"
+              >
+                {t('buttons.createStory')}
+              </button>
+              <button 
+                type="button" 
+                onClick={() => setIsModalOpen(false)}
+                data-testid="cancel-button"
+              >
+                {t('buttons.cancel')}
+              </button>
+            </div>
+          </form>
+        </div>
+      )}
     </main>
   );
 }

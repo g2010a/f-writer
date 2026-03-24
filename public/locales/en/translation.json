@@ -1,0 +1,17 @@
+{
+    "welcome": { 
+        "title": "Welcome to f-writer",
+        "subtitle": "An integrated writing environment for aspiring authors"
+    },
+    "buttons": {
+        "newStory": "New Story",
+        "createStory": "Create Story",
+        "cancel": "Cancel"
+    },
+    "forms": {
+        "storyTitle": "Title",
+        "storyTitlePlaceholder": "Enter story title...",
+        "briefDescription": "Brief Description (optional)",
+        "briefDescriptionPlaceholder": "Enter a brief description..."
+    }
+}

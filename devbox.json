@@ -1,0 +1,16 @@
+{
+  "$schema": "https://raw.githubusercontent.com/jetify-com/devbox/0.17.0/.schema/devbox.schema.json",
+  "packages": ["rustup@latest", "nodejs@latest", "glow@latest"],
+  "shell": {
+    "init_hook": [
+      "rustup default stable",
+      "rustup componenet add rust-analyzer",
+      "clear && PAGER=cat glow README.md"
+    ],
+    "scripts": {
+      "dev": "npm run tauri dev",
+      "build": "npm run tauri build",
+      "install-deps": "npm install"
+    }
+  }
+}
